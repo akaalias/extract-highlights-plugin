@@ -5,5 +5,5 @@
   "description": "This is a shortcut-based plugin extracts all ==highlights== in a note into your clipboard",
   "author": "Alexis Rondeau",
   "authorUrl": "https://publish.obsidian.md/alexisrondeau",
-  "isDesktopOnly": false
+  "js": "main.js"
 }
