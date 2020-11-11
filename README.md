@@ -9,13 +9,13 @@ This release will copy the highlights delimited by == into your clipboard as a b
 
 The default short-cut is: 
 
-`SHIFT-ALT-=`
+<kbd>SHIFT</kbd> + <kbd>ALT</kbd> + <kbd>=</kbd>
 
-This will extract all highlighted parts in your current note and place it in your clipboard.
+This will extract all highlighted parts in your current note and place it in your clipboard. 
 
 Then, anywhere you want, just paste 
 
-`Command-v` (MacOS) or the equivalent on Windows/Linux
+<kbd>Command</kbd> + <kbd>v</kbd> (MacOS) or the equivalent on Windows/Linux
 
 The output is a markdown-block titled "Highlights" with a bullet-list of the highlights.
 
@@ -28,7 +28,7 @@ The output is a markdown-block titled "Highlights" with a bullet-list of the hig
 [icebear](https://forum.obsidian.md/u/icebear/summary) ideas
 
 #### UI
-- [x] command (`SHIFT-ALT-=`) which then copies all of the highlighted text either into:
+- [x] command (<kbd>SHIFT</kbd> + <kbd>ALT</kbd> + <kbd>=</kbd>) which then copies all of the highlighted text either into:
 - [ ] click a button which then copies all of the highlighted text either into:
 
 #### Outputs
