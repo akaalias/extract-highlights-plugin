@@ -1,8 +1,8 @@
 {
   "id": "extract-highlights-plugin",
   "name": "Extract Highlights",
-  "version": "0.0.1",
-  "description": "This is a shortcut-based plugin extracts all ==highlights== in a note into your clipboard",
+  "version": "0.0.2",
+  "description": "Allows to extracts all ==highlights== in a note into your clipboard",
   "author": "Alexis Rondeau",
   "authorUrl": "https://publish.obsidian.md/alexisrondeau",
   "js": "main.js"
