@@ -7,6 +7,12 @@ This is a very bare-bones implementation of [icebear](https://forum.obsidian.md/
 ### How it works
 This release will copy the highlights delimited by == into your clipboard as a bullet-list. 
 
+### Demo
+
+![basic functionality](https://github.com/akaalias/extract-highlights-plugin/blob/master/clipboard-flow.gif?raw=true)
+
+#### Hotkey
+
 The default short-cut is: 
 
 <kbd>SHIFT</kbd> + <kbd>ALT</kbd> + <kbd>=</kbd>
@@ -19,9 +25,11 @@ Then, anywhere you want, just paste
 
 The output is a markdown-block titled "Highlights" with a bullet-list of the highlights.
 
-### Demo
+#### Ribbon Button
 
-![basic functionality](https://github.com/akaalias/extract-highlights-plugin/blob/master/clipboard-flow.gif?raw=true)
+There is also a button (a circle-shape) that's added to your left-side ribbon. 
+
+Clicking on it will also extract all highlighted parts in your current note and place it in your clipboard.
 
 ### Backlog
 
@@ -29,7 +37,7 @@ The output is a markdown-block titled "Highlights" with a bullet-list of the hig
 
 #### UI
 - [x] command (<kbd>SHIFT</kbd> + <kbd>ALT</kbd> + <kbd>=</kbd>) which then copies all of the highlighted text either into:
-- [ ] click a button which then copies all of the highlighted text either into:
+- [x] click a button which then copies all of the highlighted text either into:
 
 #### Outputs
 - [x] my clipboard
