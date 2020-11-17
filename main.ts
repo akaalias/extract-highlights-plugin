@@ -44,7 +44,7 @@ export default class HighlighExtractor extends Plugin {
 	}
 
 	processHighlights(data: string): string {
-		let re = /==(.*?)==/g;
+		let re = /==([\s\S]*?)==/g;
 		let matches = data.match(re);
 
 		var result = "";
@@ -53,7 +53,7 @@ export default class HighlighExtractor extends Plugin {
 			result += "## Highlights\n";
 
 			for (let entry of matches) {
-				let removeNewline = entry.replace("\n", "");
+				var removeNewline = entry.replace(/\n/g, "");
 				let removeHighlightStart = removeNewline.replace("==", "")
 				let removeHighlightEnd = removeHighlightStart.replace("==", "")
 
