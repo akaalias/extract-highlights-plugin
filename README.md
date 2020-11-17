@@ -4,6 +4,8 @@ Extracts all highlights from a current note in Obsidian into your clipboard.
 
 This is a very bare-bones implementation of [icebear](https://forum.obsidian.md/u/icebear/summary)'s plugin request on Obsidian Forum https://forum.obsidian.md/t/extract-highlights-from-note/7867
 
+Email me if you have any questions, suggestions, issues => alexis.rondeau@gmail.com
+
 ### How it works
 This release will copy the highlights delimited by == into your clipboard as a bullet-list. 
 
