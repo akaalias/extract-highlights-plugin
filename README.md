@@ -29,7 +29,7 @@ The default hotkey is:
 There is also a button (a circle-shape) that's added to your left-side ribbon. 
 
 #### Using the Command Palette
-I looked into it and there’s a bug the way clipboard works with the Command Palette. Basically everything but the “Paste” doesn’t work.
+I looked into it and there’s a bug the way clipboard works with the Command Palette. Basically everything but the “Paste” works.
 
 But I’ve found a temporary work-around. It’s weird but it works.
 
