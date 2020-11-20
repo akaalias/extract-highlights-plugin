@@ -1,4 +1,4 @@
-import { Plugin, Notice, addIcon } from "obsidian"
+import { Plugin, Notice, addIcon, View } from "obsidian"
 import ExtractHighlightsPluginSettings from "./ExtractHighlightsPluginSettings"
 import ExtractHighlightsPluginSettingsTab from "./ExtractHighlightsPluginSettingsTab"
 
@@ -8,8 +8,10 @@ export default class ExtractHighlightsPlugin extends Plugin {
 
 	public settings: ExtractHighlightsPluginSettings;
 	public statusBar: HTMLElement
+	public counter: 0;
 
 	async onload() {
+		this.counter = 0;
 		this.loadSettings();
 		this.addSettingTab(new ExtractHighlightsPluginSettingsTab(this.app, this));
 
@@ -51,8 +53,13 @@ export default class ExtractHighlightsPlugin extends Plugin {
 
 		try {
 			if (activeLeaf?.view?.data) {
-				let highlights = this.processHighlights(activeLeaf.view.data);
-				let saveStatus = this.saveToClipboard(highlights);
+				// console.log(activeLeaf);
+				// console.log(activeLeaf.view.file.basename);
+				// console.log(activeLeaf.view);
+				// console.log(activeLeaf.view.data);
+
+				let highlightsText = this.processHighlights(activeLeaf.view);
+				let saveStatus = this.saveToClipboard(highlightsText);
 				new Notice(saveStatus);
 			} else {
 				new Notice("No highlights to extract.");
@@ -62,9 +69,13 @@ export default class ExtractHighlightsPlugin extends Plugin {
 		}
 	}
 
-	processHighlights(data: string): string {
+	processHighlights(view: any): string {
 		let re = /(==|\<mark\>)([\s\S]*?)(==|\<\/mark\>)/g;
+
+		let data = view.data;
+		let basename = view.file.basename;
 		let matches = data.match(re);
+		this.counter += 1;
 
 		console.log(matches.length);
 
@@ -72,7 +83,8 @@ export default class ExtractHighlightsPlugin extends Plugin {
 
 		if (matches != null) {
 			if(this.settings.headlineText != "") { 
-				result += `## ${this.settings.headlineText}\n`;
+				let text = this.settings.headlineText.replace(/\$NOTE_TITLE/, `${basename}`)
+				result += `## ${text}\n`;
 			}
 
 			for (let entry of matches) {
@@ -80,8 +92,22 @@ export default class ExtractHighlightsPlugin extends Plugin {
 				let removeHighlightStart = removeNewline.replace(/==/g, "")
 				let removeHighlightEnd = removeHighlightStart.replace(/\<mark\>/g, "")
 				let removeMarkClosing = removeHighlightEnd.replace(/\<\/mark\>/g, "")
+				let removeDoubleSpaces = removeMarkClosing.replace("  ", " ");
+				removeDoubleSpaces = removeDoubleSpaces.replace("  ", " ");
+				removeDoubleSpaces = removeDoubleSpaces.trim();
 
-				result += " - " + removeMarkClosing + "\n";
+				result += "- " + removeDoubleSpaces
+
+				if(this.settings.addFootnotes) {
+					result += `[^${this.counter}]`;
+				} 
+
+				result += "\n";
+			}
+
+			if(this.settings.addFootnotes) {
+				result += "\n"
+				result += `[^${this.counter}]: [[${basename}]]\n`
 			}
 		}
 
@@ -91,6 +117,7 @@ export default class ExtractHighlightsPlugin extends Plugin {
 	saveToClipboard(data: string): string {
 		if (data.length > 0) {
 			navigator.clipboard.writeText(data);
+		
 			return "Highlights copied to clipboard!";
 		} else {
 			return "No highlights found";

@@ -18,15 +18,30 @@ export default class ExtractHighlightsPluginSettingsTab extends PluginSettingTab
 	  
 	  new Setting(containerEl)
 		.setName("Heading Text")
-		.setDesc("If set, will add `## Heading` to your clipboard automatically. Leave blank to omit.")
+		.setDesc("If set, will add `## Your Text`. Use $NOTE_TITLE to include title. Leave blank to omit. ")
 		.addText((text) =>
 		  text
-			.setPlaceholder("Heading")
+			.setPlaceholder("Highlights for $NOTE_TITLE")
 			.setValue(this.plugin.settings.headlineText)
 			.onChange((value) => {
 			  this.plugin.settings.headlineText = value;
 			  this.plugin.saveData(this.plugin.settings);
 			})
 		);
+
+	
+	new Setting(containerEl)
+		.setName('Enable Footnotes')
+		.setDesc(
+		  'If enabled, will add a footnote to the current document to each highlight in your list. Useful when you wan to keep track of which highlight came from which source file.',
+		)
+		.addToggle((toggle) =>
+		  toggle.setValue(this.plugin.settings.addFootnotes).onChange((value) => {
+			this.plugin.settings.addFootnotes = value;
+			this.plugin.saveData(this.plugin.settings);
+			this.display();
+		  }),
+		);
+  
 	}
 }
