@@ -39,7 +39,6 @@ export default class ExtractHighlightsPluginSettingsTab extends PluginSettingTab
 		  toggle.setValue(this.plugin.settings.addFootnotes).onChange((value) => {
 			this.plugin.settings.addFootnotes = value;
 			this.plugin.saveData(this.plugin.settings);
-			this.display();
 		  }),
 		);
   

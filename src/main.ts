@@ -33,6 +33,7 @@ export default class ExtractHighlightsPlugin extends Plugin {
 			],
 		});
 	}
+
 	loadSettings() {
 		this.settings = new ExtractHighlightsPluginSettings();
 		(async () => {
@@ -40,6 +41,7 @@ export default class ExtractHighlightsPlugin extends Plugin {
 		  if (loadedSettings) {
 			console.log("Found existing settings file");
 			this.settings.headlineText = loadedSettings.headlineText;
+			this.settings.addFootnotes = loadedSettings.addFootnotes;
 		  } else {
 			console.log("No settings file found, saving...");
 			this.saveData(this.settings);
@@ -70,7 +72,7 @@ export default class ExtractHighlightsPlugin extends Plugin {
 	}
 
 	processHighlights(view: any): string {
-		let re = /(==|\<mark\>)([\s\S]*?)(==|\<\/mark\>)/g;
+		let re = /(==|\<mark\>|\*\*)([\s\S]*?)(==|\<\/mark\>|\*\*)/g;
 
 		let data = view.data;
 		let basename = view.file.basename;
@@ -92,7 +94,9 @@ export default class ExtractHighlightsPlugin extends Plugin {
 				let removeHighlightStart = removeNewline.replace(/==/g, "")
 				let removeHighlightEnd = removeHighlightStart.replace(/\<mark\>/g, "")
 				let removeMarkClosing = removeHighlightEnd.replace(/\<\/mark\>/g, "")
-				let removeDoubleSpaces = removeMarkClosing.replace("  ", " ");
+				let removeBold = removeMarkClosing.replace(/\*\*/g, "")
+				let removeDoubleSpaces = removeBold.replace("  ", " ");
+
 				removeDoubleSpaces = removeDoubleSpaces.replace("  ", " ");
 				removeDoubleSpaces = removeDoubleSpaces.trim();
 
@@ -109,6 +113,8 @@ export default class ExtractHighlightsPlugin extends Plugin {
 				result += "\n"
 				result += `[^${this.counter}]: [[${basename}]]\n`
 			}
+
+			result += "\n";
 		}
 
 		return result;
