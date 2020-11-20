@@ -2,7 +2,7 @@
   "name": "extract-highlights-plugin",
   "version": "0.0.1",
   "description": "his is a shortcut-based plugin extracts all ==highlights== in a note into your clipboard",
-  "main": "main.js",
+  "main": "ExtractHighlightsPlugin.js",
   "scripts": {
     "dev": "rollup --config rollup.config.js -w",
     "build": "rollup --config rollup.config.js"
@@ -14,7 +14,7 @@
     "@rollup/plugin-commonjs": "^15.1.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@rollup/plugin-typescript": "^6.0.0",
-    "@types/node": "^14.14.2",
+    "@types/node": "^14.14.9",
     "obsidian": "https://github.com/obsidianmd/obsidian-api/tarball/master",
     "rollup": "^2.32.1",
     "tslib": "^2.0.3",

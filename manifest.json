@@ -1,7 +1,7 @@
 {
   "id": "extract-highlights-plugin",
   "name": "Extract Highlights",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Allows to extracts all ==highlights== in a note into your clipboard",
   "author": "Alexis Rondeau",
   "authorUrl": "https://publish.obsidian.md/alexisrondeau",
