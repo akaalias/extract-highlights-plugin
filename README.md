@@ -1,10 +1,10 @@
 ## Extract Highlights Plugin
 
-Extracts all highlights from a current note in Obsidian into your clipboard. 
+Extracts all highlights from a current note in Obsidian into your clipboard. Based on [icebear's plugin request](https://forum.obsidian.md/t/extract-highlights-from-note/7867).
 
-Based on [icebear](https://forum.obsidian.md/u/icebear/summary)'s plugin request on Obsidian Forum https://forum.obsidian.md/t/extract-highlights-from-note/7867
+Are you using Extract Highlights? I'd love to hear from you! 
 
-Are you using Extract Highlights? I'd love to hear from you! Questions, suggestions, issues use the forum at https://forum.obsidian.md/t/extract-highlights-plugin/8763/12
+[Share your questions and suggestions in the forum](https://forum.obsidian.md/t/extract-highlights-plugin/8763/12)
 
 ### How it works
 This plugin will copy the highlights delimited by `==`, `**` and `<mark></mark>` into your clipboard as a bullet-list. 
@@ -25,8 +25,9 @@ The default hotkey is:
 <kbd>SHIFT</kbd> + <kbd>ALT</kbd> + <kbd>=</kbd>
 
 #### Using the Ribbon Button
-
 There is also a button (a circle-shape) that's added to your left-side ribbon. 
+
+Clicking on it will also extract all highlighted parts in your current note and place it in your clipboard.
 
 #### Using the Command Palette
 I looked into it and there’s a bug the way clipboard works with the Command Palette. Basically everything but the “Paste” works.
@@ -41,11 +42,7 @@ But I’ve found a temporary work-around. It’s weird but it works.
 
 #### Pasting highlights from your clipboard
 
-Clicking on it will also extract all highlighted parts in your current note and place it in your clipboard.
-
-This will extract all highlighted parts in your current note and place it in your clipboard. 
-
-Then, anywhere you want, just paste 
+After using the hotkey, button or command palette, anywhere you want, just paste the clipboard!
 
 <kbd>Command</kbd> + <kbd>v</kbd> (MacOS) or the equivalent on Windows/Linux
 
