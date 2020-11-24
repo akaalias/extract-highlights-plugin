@@ -55,11 +55,6 @@ export default class ExtractHighlightsPlugin extends Plugin {
 
 		try {
 			if (activeLeaf?.view?.data) {
-				// console.log(activeLeaf);
-				// console.log(activeLeaf.view.file.basename);
-				// console.log(activeLeaf.view);
-				// console.log(activeLeaf.view.data);
-
 				let highlightsText = this.processHighlights(activeLeaf.view);
 				let saveStatus = this.saveToClipboard(highlightsText);
 				new Notice(saveStatus);
@@ -72,7 +67,14 @@ export default class ExtractHighlightsPlugin extends Plugin {
 	}
 
 	processHighlights(view: any): string {
-		let re = /(==|\<mark\>|\*\*)([\s\S]*?)(==|\<\/mark\>|\*\*)/g;
+
+		var re;
+
+		if(this.settings.useBoldForHighlights) {
+			re = /(==|\<mark\>|\*\*)([\s\S]*?)(==|\<\/mark\>|\*\*)/g;
+		} else {
+			re = /(==|\<mark\>)([\s\S]*?)(==|\<\/mark\>)/g;
+		}
 
 		let data = view.data;
 		let basename = view.file.basename;

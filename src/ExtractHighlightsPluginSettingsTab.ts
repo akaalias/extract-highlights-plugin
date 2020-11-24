@@ -29,6 +29,18 @@ export default class ExtractHighlightsPluginSettingsTab extends PluginSettingTab
 			})
 		);
 
+	new Setting(containerEl)
+		.setName('Use bold for highlights')
+		.setDesc(
+		  'If enabled, will include classic markdown bold (**) sections as highlights',
+		)
+		.addToggle((toggle) =>
+		  toggle.setValue(this.plugin.settings.useBoldForHighlights).onChange((value) => {
+			this.plugin.settings.useBoldForHighlights = value;
+			this.plugin.saveData(this.plugin.settings);
+		  }),
+		);
+
 	
 	new Setting(containerEl)
 		.setName('Enable Footnotes')

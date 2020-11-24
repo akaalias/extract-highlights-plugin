@@ -58,6 +58,8 @@ The output is a markdown-block titled "Highlights" with a bullet-list of the hig
 - [x] allow to change text in heading `## My Custom Highlights`
 - [x] allow to include note-name in heading such as `## From: $NOTE_TITLE`
 - [x] allow to add footnotes for each highlight and include link to source-note
+- [x] allow to optionally enable bold for highlights 
+- [x] allow for Command Palette to trigger copying (Works sort of, bug in Electron)
 
 #### Outputs
 - [x] my clipboard
