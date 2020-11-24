@@ -48,7 +48,6 @@ After using the hotkey, button or command palette, anywhere you want, just paste
 
 The output is a markdown-block titled "Highlights" with a bullet-list of the highlights.
 
-
 ### Backlog
 #### UI
 - [x] command (<kbd>SHIFT</kbd> + <kbd>ALT</kbd> + <kbd>=</kbd>) which then copies all of the highlighted text either into:
