@@ -89,6 +89,11 @@ export default class ExtractHighlightsPlugin extends Plugin {
 		}
 	}
 
+	toggleHighlight() {
+		this.toggleLineHighlight();
+		// this.toggleFullLine();
+	}
+
 	toggleLineHighlight() {
 		const cursorPosition = this.editor.getCursor();
 		const ch = cursorPosition.ch;
@@ -96,17 +101,24 @@ export default class ExtractHighlightsPlugin extends Plugin {
 		const lineText = this.editor.getLine(cursorPosition.line);
 
 		const allTextLeftOfCursor = lineText.substr(0, cursorPosition.ch);
+		const allTextRightOfCursor = lineText.substr(cursorPosition.ch);
+
+
 		let periodIndexLeftOfCursor = allTextLeftOfCursor.lastIndexOf(".");
 
 		if(periodIndexLeftOfCursor == -1) { periodIndexLeftOfCursor = 0; }
 
 		let sentenceUntilLeftOfCursor = allTextLeftOfCursor.substr(periodIndexLeftOfCursor, ch - periodIndexLeftOfCursor);
-		if(sentenceUntilLeftOfCursor.startsWith(". ")) { sentenceUntilLeftOfCursor = sentenceUntilLeftOfCursor.replace(". ", "")}
 
-		const allTextRightOfCursor = lineText.substr(cursorPosition.ch);
+		if(sentenceUntilLeftOfCursor.startsWith(". ")) {
+			sentenceUntilLeftOfCursor = sentenceUntilLeftOfCursor.replace(". ", "")
+		}
+
 		let periodIndexRightOfCursor = allTextRightOfCursor.indexOf(".");
 
-		if(periodIndexRightOfCursor == -1) {periodIndexRightOfCursor = allTextRightOfCursor.length};
+		if(periodIndexRightOfCursor == -1) {
+			periodIndexRightOfCursor = allTextRightOfCursor.length
+		}
 
 		let sentenceUntilRightOfCursor = allTextRightOfCursor.substr(0, periodIndexRightOfCursor + 1);
 		let currentSentence = sentenceUntilLeftOfCursor + sentenceUntilRightOfCursor;
