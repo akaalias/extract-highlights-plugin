@@ -74,7 +74,6 @@ export default class ExtractHighlightsPlugin extends Plugin {
 	}
 
 	extractHighlights(): void {
-
 		let activeLeaf: any = this.app.workspace.activeLeaf ?? null
 
 		try {
@@ -91,6 +90,41 @@ export default class ExtractHighlightsPlugin extends Plugin {
 	}
 
 	toggleLineHighlight() {
+		const cursorPosition = this.editor.getCursor();
+		const ch = cursorPosition.ch;
+		const line = cursorPosition.line;
+		const lineText = this.editor.getLine(cursorPosition.line);
+
+		const allTextLeftOfCursor = lineText.substr(0, cursorPosition.ch);
+		let periodIndexLeftOfCursor = allTextLeftOfCursor.lastIndexOf(".");
+
+		if(periodIndexLeftOfCursor == -1) { periodIndexLeftOfCursor = 0; }
+
+		let sentenceUntilLeftOfCursor = allTextLeftOfCursor.substr(periodIndexLeftOfCursor, ch - periodIndexLeftOfCursor);
+		if(sentenceUntilLeftOfCursor.startsWith(". ")) { sentenceUntilLeftOfCursor = sentenceUntilLeftOfCursor.replace(". ", "")}
+
+		const allTextRightOfCursor = lineText.substr(cursorPosition.ch);
+		let periodIndexRightOfCursor = allTextRightOfCursor.indexOf(".");
+
+		if(periodIndexRightOfCursor == -1) {periodIndexRightOfCursor = allTextRightOfCursor.length};
+
+		let sentenceUntilRightOfCursor = allTextRightOfCursor.substr(0, periodIndexRightOfCursor + 1);
+		let currentSentence = sentenceUntilLeftOfCursor + sentenceUntilRightOfCursor;
+		let absolutePeriodIndexRightOfCursor = periodIndexRightOfCursor + allTextLeftOfCursor.length;
+
+		currentSentence = "==" + currentSentence + "==";
+
+		let replaceOffset = periodIndexLeftOfCursor;
+
+		if(allTextLeftOfCursor.contains(".")) {
+			replaceOffset = periodIndexLeftOfCursor + 2
+		}
+
+		this.editor.replaceRange(currentSentence, {line: line, ch: replaceOffset}, {line: line, ch: absolutePeriodIndexRightOfCursor + 1});
+		this.editor.setCursor(cursorPosition);
+	}
+
+	toggleFullLine() {
 		const cursorPosition = this.editor.getCursor();
 		let lineText = this.editor.getLine(cursorPosition.line);
 
