@@ -91,7 +91,6 @@ export default class ExtractHighlightsPlugin extends Plugin {
 
 	toggleHighlight() {
 		this.toggleLineHighlight();
-		// this.toggleFullLine();
 	}
 
 	toggleLineHighlight() {
@@ -102,7 +101,6 @@ export default class ExtractHighlightsPlugin extends Plugin {
 
 		const allTextLeftOfCursor = lineText.substr(0, cursorPosition.ch);
 		const allTextRightOfCursor = lineText.substr(cursorPosition.ch);
-
 
 		let periodIndexLeftOfCursor = allTextLeftOfCursor.lastIndexOf(".");
 
