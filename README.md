@@ -18,11 +18,19 @@ Optionally you can...
 
 ![basic functionality](https://github.com/akaalias/extract-highlights-plugin/blob/master/clipboard-flow.gif?raw=true)
 
-#### Using the Hotkey
+#### Using the Hotkey to EXTRACT highlights
 
 The default hotkey is: 
 
 <kbd>SHIFT</kbd> + <kbd>ALT</kbd> + <kbd>=</kbd>
+
+#### Using the Hotkey to HIGHLIGHT the sentence under cursor
+
+The default hotkey for this is: 
+
+<kbd>SHIFT</kbd> + <kbd>ALT</kbd> + <kbd>_</kbd>
+
+Super useful for when you're reading and just don't want to switch to your mouse for selecting the sentence. 
 
 #### Using the Ribbon Button
 There is also a button (a circle-shape) that's added to your left-side ribbon. 
