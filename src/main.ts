@@ -66,6 +66,7 @@ export default class ExtractHighlightsPlugin extends Plugin {
 			console.log("Found existing settings file");
 			this.settings.headlineText = loadedSettings.headlineText;
 			this.settings.addFootnotes = loadedSettings.addFootnotes;
+			this.settings.createLinks = loadedSettings.createLinks;
 		  } else {
 			console.log("No settings file found, saving...");
 			this.saveData(this.settings);
@@ -86,6 +87,80 @@ export default class ExtractHighlightsPlugin extends Plugin {
 			}
 		} catch (e) {
 			console.log(e.message)
+		}
+	}
+
+	processHighlights(view: any): string {
+
+		var re;
+
+		if(this.settings.useBoldForHighlights) {
+			re = /(==|\<mark\>|\*\*)([\s\S]*?)(==|\<\/mark\>|\*\*)/g;
+		} else {
+			re = /(==|\<mark\>)([\s\S]*?)(==|\<\/mark\>)/g;
+		}
+
+		let data = view.data;
+		let basename = view.file.basename;
+		let matches = data.match(re);
+		this.counter += 1;
+
+		console.log(matches.length);
+
+		var result = "";
+
+		if (matches != null) {
+			if(this.settings.headlineText != "") { 
+				let text = this.settings.headlineText.replace(/\$NOTE_TITLE/, `${basename}`)
+				result += `## ${text}\n`;
+			}
+
+			for (let entry of matches) {
+				var removeNewline = entry.replace(/\n/g, " ");
+				let removeHighlightStart = removeNewline.replace(/==/g, "")
+				let removeHighlightEnd = removeHighlightStart.replace(/\<mark\>/g, "")
+				let removeMarkClosing = removeHighlightEnd.replace(/\<\/mark\>/g, "")
+				let removeBold = removeMarkClosing.replace(/\*\*/g, "")
+				let removeDoubleSpaces = removeBold.replace("  ", " ");
+
+				removeDoubleSpaces = removeDoubleSpaces.replace("  ", " ");
+				removeDoubleSpaces = removeDoubleSpaces.trim();
+
+				result += "- "
+
+				if(this.settings.createLinks) {
+					result += "[[" + removeDoubleSpaces + "]]";
+				} else {
+					result += removeDoubleSpaces;
+				}
+
+				if(this.settings.addFootnotes) {
+					result += `[^${this.counter}]`;
+				} 
+
+				result += "\n";
+			}
+
+			if(this.settings.addFootnotes) {
+				result += "\n"
+				result += `[^${this.counter}]: [[${basename}]]\n`
+			}
+
+			result += "\n";
+		}
+
+		return result;
+	}
+
+	saveToClipboard(data: string): string {
+		if (data.length > 0) {
+			console.log(data);
+
+			navigator.clipboard.writeText(data);
+		
+			return "Highlights copied to clipboard!";
+		} else {
+			return "No highlights found";
 		}
 	}
 
@@ -154,71 +229,5 @@ export default class ExtractHighlightsPlugin extends Plugin {
 
 		this.editor.replaceRange(highlightedLine, startPosition, endPosition);
 		this.editor.setCursor(cursorPosition);
-	}
-
-	processHighlights(view: any): string {
-
-		var re;
-
-		if(this.settings.useBoldForHighlights) {
-			re = /(==|\<mark\>|\*\*)([\s\S]*?)(==|\<\/mark\>|\*\*)/g;
-		} else {
-			re = /(==|\<mark\>)([\s\S]*?)(==|\<\/mark\>)/g;
-		}
-
-		let data = view.data;
-		let basename = view.file.basename;
-		let matches = data.match(re);
-		this.counter += 1;
-
-		console.log(matches.length);
-
-		var result = "";
-
-		if (matches != null) {
-			if(this.settings.headlineText != "") { 
-				let text = this.settings.headlineText.replace(/\$NOTE_TITLE/, `${basename}`)
-				result += `## ${text}\n`;
-			}
-
-			for (let entry of matches) {
-				var removeNewline = entry.replace(/\n/g, " ");
-				let removeHighlightStart = removeNewline.replace(/==/g, "")
-				let removeHighlightEnd = removeHighlightStart.replace(/\<mark\>/g, "")
-				let removeMarkClosing = removeHighlightEnd.replace(/\<\/mark\>/g, "")
-				let removeBold = removeMarkClosing.replace(/\*\*/g, "")
-				let removeDoubleSpaces = removeBold.replace("  ", " ");
-
-				removeDoubleSpaces = removeDoubleSpaces.replace("  ", " ");
-				removeDoubleSpaces = removeDoubleSpaces.trim();
-
-				result += "- " + removeDoubleSpaces
-
-				if(this.settings.addFootnotes) {
-					result += `[^${this.counter}]`;
-				} 
-
-				result += "\n";
-			}
-
-			if(this.settings.addFootnotes) {
-				result += "\n"
-				result += `[^${this.counter}]: [[${basename}]]\n`
-			}
-
-			result += "\n";
-		}
-
-		return result;
-	}
-
-	saveToClipboard(data: string): string {
-		if (data.length > 0) {
-			navigator.clipboard.writeText(data);
-		
-			return "Highlights copied to clipboard!";
-		} else {
-			return "No highlights found";
-		}
 	}
 }

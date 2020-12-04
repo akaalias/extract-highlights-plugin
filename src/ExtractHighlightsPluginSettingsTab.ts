@@ -53,6 +53,18 @@ export default class ExtractHighlightsPluginSettingsTab extends PluginSettingTab
 			this.plugin.saveData(this.plugin.settings);
 		  }),
 		);
-  
+
+		new Setting(containerEl)
+			.setName('Create links')
+			.setDesc(
+				'If enabled, will turn each highlight into a [[ link ]] to create a highlight MOC',
+			)
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.createLinks).onChange((value) => {
+					this.plugin.settings.createLinks = value;
+					this.plugin.saveData(this.plugin.settings);
+				}),
+			);
+
 	}
 }
