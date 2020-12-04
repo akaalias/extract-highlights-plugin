@@ -67,6 +67,7 @@ export default class ExtractHighlightsPlugin extends Plugin {
 			this.settings.headlineText = loadedSettings.headlineText;
 			this.settings.addFootnotes = loadedSettings.addFootnotes;
 			this.settings.createLinks = loadedSettings.createLinks;
+			this.settings.autoCapitalize = loadedSettings.autoCapitalize;
 		  } else {
 			console.log("No settings file found, saving...");
 			this.saveData(this.settings);
@@ -125,6 +126,12 @@ export default class ExtractHighlightsPlugin extends Plugin {
 
 				removeDoubleSpaces = removeDoubleSpaces.replace("  ", " ");
 				removeDoubleSpaces = removeDoubleSpaces.trim();
+
+				if(this.settings.autoCapitalize) {
+					if(removeDoubleSpaces != null) {
+						removeDoubleSpaces = this.capitalizeFirstLetter(removeDoubleSpaces);
+					}
+				}
 
 				result += "- "
 
@@ -229,5 +236,10 @@ export default class ExtractHighlightsPlugin extends Plugin {
 
 		this.editor.replaceRange(highlightedLine, startPosition, endPosition);
 		this.editor.setCursor(cursorPosition);
+	}
+
+	capitalizeFirstLetter(s: string) {
+		console.log("capitalizing...");
+		return s.charAt(0).toUpperCase() + s.slice(1);
 	}
 }
