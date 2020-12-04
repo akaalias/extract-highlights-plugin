@@ -13,6 +13,7 @@ Optionally you can...
 
 * Customize the heading text of the list, include the note-title or hide it all-together
 * Customize the highlights by adding footnotes to each that link back to the source-file 
+* Customize to have each highlight be an `[[` Obsidian link `]]` to create ad-hoc maps of contents (MOCs) 
 
 ### Demo
 
@@ -55,6 +56,7 @@ After using the hotkey, button or command palette, anywhere you want, just paste
 <kbd>Command</kbd> + <kbd>v</kbd> (MacOS) or the equivalent on Windows/Linux
 
 The output is a markdown-block titled "Highlights" with a bullet-list of the highlights.
+
 
 ### Backlog
 #### UI
