@@ -69,7 +69,7 @@ export default class ExtractHighlightsPluginSettingsTab extends PluginSettingTab
 		new Setting(containerEl)
 			.setName('Auto-capitalize first letter')
 			.setDesc(
-				'If enabled, capitalize the first letter of each highlight.',
+				'If enabled, capitalizes the first letter of each highlight.',
 			)
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.autoCapitalize).onChange((value) => {

@@ -9,11 +9,12 @@ Are you using Extract Highlights? I'd love to hear from you!
 ### How it works
 This plugin will copy the highlights delimited by `==`, `**` and `<mark></mark>` into your clipboard as a bullet-list. 
 
-Optionally you can...
+Optionally you can customize...
 
-* Customize the heading text of the list, include the note-title or hide it all-together
-* Customize the highlights by adding footnotes to each that link back to the source-file 
-* Customize to have each highlight be an `[[` Obsidian link `]]` to create ad-hoc maps of contents (MOCs) 
+* **The heading text of the list**, include the note-title or hide it all-together
+* **Adding a footnote** to each that link back to the source-file 
+* **Creating an ad-hoc map-of-content (MOC)** by turning each highlight into an `[[` Obsidian link `]]`  
+* **Auto-capitalize** the first letter in each highlight for consistency
 
 ### Demo
 
