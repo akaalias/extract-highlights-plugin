@@ -16,9 +16,9 @@ Optionally you can customize...
 * **Creating an ad-hoc map-of-content (MOC)** by turning each highlight into an `[[` Obsidian link `]]`  
 * **Auto-capitalize** the first letter in each highlight for consistency
 
-### Demo
+### Demo Creating and Extracting Highlights
 
-![basic functionality](https://github.com/akaalias/extract-highlights-plugin/blob/master/clipboard-flow.gif?raw=true)
+![basic functionality](https://github.com/akaalias/extract-highlights-plugin/blob/master/highlight.gif?raw=true)
 
 #### Using the Hotkey to EXTRACT highlights
 
@@ -33,6 +33,8 @@ The default hotkey for this is:
 <kbd>SHIFT</kbd> + <kbd>ALT</kbd> + <kbd>_</kbd>
 
 Super useful for when you're reading and just don't want to switch to your mouse for selecting the sentence. 
+
+![demo](https://github.com/akaalias/extract-highlights-plugin/blob/master/onoff.gif?raw=true)
 
 Will remove highlighting if the sentence under your cursor is currently delimited by "==".
 
