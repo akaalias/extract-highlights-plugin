@@ -9,7 +9,7 @@ describe("Toggle Highlights", () => {
         subject = new ToggleHighlight();
     });
 
-    xdescribe("Empty input", () => {
+    describe("Empty input", () => {
         it("Returns an empty string", () => {
             const result = subject.toggleHighlight("");
             assert.equal(result, "");
