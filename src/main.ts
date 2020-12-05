@@ -2,6 +2,7 @@ import {Plugin, Notice, addIcon, View, MarkdownView} from "obsidian"
 import ExtractHighlightsPluginSettings from "./ExtractHighlightsPluginSettings"
 import ExtractHighlightsPluginSettingsTab from "./ExtractHighlightsPluginSettingsTab"
 import {Position} from "codemirror";
+import ToggleHighlight from "./ToggleHighlight";
 
 addIcon('target', '<path d="M50 88C29.0132 88 12 70.9868 12 50C12 29.0132 29.0132 12 50 12C70.9868 12 88 29.0132 88 50C87.9761 70.9769 70.9769 87.9761 50 88ZM50 22.8571C35.0094 22.8571 22.8571 35.0094 22.8571 50C22.8571 64.9906 35.0094 77.1429 50 77.1429C64.9906 77.1429 77.1429 64.9906 77.1429 50C77.1429 35.0094 64.9906 22.8571 50 22.8571ZM50 66.2857C41.0056 66.2857 33.7143 58.9943 33.7143 50C33.7143 41.0056 41.0056 33.7143 50 33.7143C58.9943 33.7143 66.2857 41.0056 66.2857 50C66.2857 54.3192 64.5699 58.4616 61.5157 61.5157C58.4616 64.5699 54.3192 66.2857 50 66.2857Z" fill="#646464"/>')
 
@@ -48,7 +49,7 @@ export default class ExtractHighlightsPlugin extends Plugin {
 		this.addCommand({
 			id: "shortcut-highlight-sentence",
 			name: "Shortcut for highlighting sentence cursor is in",
-			callback: () => this.toggleLineHighlight(),
+			callback: () => this.createHighlight(),
 			hotkeys: [
 				{
 					modifiers: ["Alt", "Shift"],
@@ -171,72 +172,17 @@ export default class ExtractHighlightsPlugin extends Plugin {
 		}
 	}
 
-	toggleHighlight() {
-		this.toggleLineHighlight();
-	}
-
-	toggleLineHighlight() {
-		const cursorPosition = this.editor.getCursor();
-		const ch = cursorPosition.ch;
-		const line = cursorPosition.line;
-		const lineText = this.editor.getLine(cursorPosition.line);
-
-		const allTextLeftOfCursor = lineText.substr(0, cursorPosition.ch);
-		const allTextRightOfCursor = lineText.substr(cursorPosition.ch);
-
-		let periodIndexLeftOfCursor = allTextLeftOfCursor.lastIndexOf(".");
-
-		if(periodIndexLeftOfCursor == -1) { periodIndexLeftOfCursor = 0; }
-
-		let sentenceUntilLeftOfCursor = allTextLeftOfCursor.substr(periodIndexLeftOfCursor, ch - periodIndexLeftOfCursor);
-
-		if(sentenceUntilLeftOfCursor.startsWith(". ")) {
-			sentenceUntilLeftOfCursor = sentenceUntilLeftOfCursor.replace(". ", "")
-		}
-
-		let periodIndexRightOfCursor = allTextRightOfCursor.indexOf(".");
-
-		if(periodIndexRightOfCursor == -1) {
-			periodIndexRightOfCursor = allTextRightOfCursor.length
-		}
-
-		let sentenceUntilRightOfCursor = allTextRightOfCursor.substr(0, periodIndexRightOfCursor + 1);
-		let currentSentence = sentenceUntilLeftOfCursor + sentenceUntilRightOfCursor;
-		let absolutePeriodIndexRightOfCursor = periodIndexRightOfCursor + allTextLeftOfCursor.length;
-
-		currentSentence = "==" + currentSentence + "==";
-
-		let replaceOffset = periodIndexLeftOfCursor;
-
-		if(allTextLeftOfCursor.contains(".")) {
-			replaceOffset = periodIndexLeftOfCursor + 2
-		}
-
-		this.editor.replaceRange(currentSentence, {line: line, ch: replaceOffset}, {line: line, ch: absolutePeriodIndexRightOfCursor + 1});
-		this.editor.setCursor(cursorPosition);
-	}
-
-	toggleFullLine() {
+	createHighlight() {
 		const cursorPosition = this.editor.getCursor();
 		let lineText = this.editor.getLine(cursorPosition.line);
 
-		let highlightedLine = "";
-		let startPosition: Position;
-		let endPosition: Position;
+		let th = new ToggleHighlight();
+		let result = th.toggleHighlight(lineText, cursorPosition.ch);
 
-		if(lineText.startsWith("==") && lineText.endsWith("==")) {
-			highlightedLine = lineText.replace(/==/g, "");
-			startPosition = {line: cursorPosition.line, ch: 0};
-			endPosition = {line: cursorPosition.line, ch: highlightedLine.length + 4};
-		} else {
-			highlightedLine = "==" + lineText + "==";
-			startPosition = {line: cursorPosition.line, ch: 0};
-			endPosition = {line: cursorPosition.line, ch: highlightedLine.length};
-		}
-
-		this.editor.replaceRange(highlightedLine, startPosition, endPosition);
-		this.editor.setCursor(cursorPosition);
+		this.editor.replaceRange(result, {line: cursorPosition.line, ch: 0}, {line: cursorPosition.line, ch: lineText.length})
+		this.editor.setCursor({line: cursorPosition.line, ch: cursorPosition.ch + 2});
 	}
+
 
 	capitalizeFirstLetter(s: string) {
 		console.log("capitalizing...");

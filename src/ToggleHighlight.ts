@@ -1,37 +1,39 @@
 export default class ToggleHighlight {
 
     toggleHighlight(s: string, ch?: number) {
-        console.log(s);
-        console.log(ch);
-
         if(s == "") return "";
+        if(s.indexOf(".") < 0) { return "==" + s + "=="}
 
-        // insert cursor-marker
         let left = s.substring(0, ch);
-        let right = s.substring(ch, s.length);
-        let markedLine = left + "$CURSOR$" + right;
+        let right = s.substring(ch);
+        let marked = left + "$CURSOR$" + right;
 
-        if(ch != null) {
+        // https://regex101.com/r/BSpvV6/7
+        let p = marked.match(/(==(.*?)==)|[^.!?\s][^.!?]*(?:[.!?](?!['"]?\s|$)[^.!?]*)*[.!?]?['"]?(?=\s|$)/gm);
 
-            if(ch == s.length) { return s; }
+        let np = new Array();
 
-            const parts = markedLine.split(".");
+        if(p.length > 0) {
+            p.forEach(function (part) {
+                if(typeof part !== 'undefined' ) {
+                    if(part.trim() == "") {  return; }
 
-            if(ch <= 0) { return "==" + parts[0].replace("$CURSOR$", "") + ".== " + parts[1].trimLeft() + "."; }
+                    if(part.includes("$CURSOR$")) {
 
-            let result = ""
-
-            for (let entry of parts) {
-                if(entry.indexOf("$CURSOR$") >= 0) {
-                    entry = entry.replace("$CURSOR$", "");
-                    entry = ". ==" + entry.trimLeft() + ".==";
+                        if(part.startsWith("==") && part.endsWith("==")) {
+                            part = part.replace(/==/g, "");
+                        } else {
+                            part = "==" + part + "==";
+                        }
+                        part = part.replace("$CURSOR$", "");
+                        part = part.trim();
+                    }
+                    part = part.trim();
+                    np.push(part);
                 }
-                result += entry;
-            }
+            });
 
-            return result;
-        } else {
-            return `==${s}==`;
+            return np.join(" ");
         }
     }
 }
