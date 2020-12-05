@@ -26,13 +26,15 @@ The default hotkey is:
 
 <kbd>SHIFT</kbd> + <kbd>ALT</kbd> + <kbd>=</kbd>
 
-#### Using the Hotkey to HIGHLIGHT the sentence under cursor
+#### Using the Hotkey to HIGHLIGHT (and UN-HIGHLIGHT) the sentence under cursor
 
 The default hotkey for this is: 
 
 <kbd>SHIFT</kbd> + <kbd>ALT</kbd> + <kbd>_</kbd>
 
 Super useful for when you're reading and just don't want to switch to your mouse for selecting the sentence. 
+
+Will remove highlighting if the sentence under your cursor is currently delimited by "==".
 
 #### Using the Ribbon Button
 There is also a button (a circle-shape) that's added to your left-side ribbon. 
