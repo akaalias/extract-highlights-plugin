@@ -9,6 +9,7 @@ export default class ToggleHighlight {
         let marked = left + "$CURSOR$" + right;
 
         // https://regex101.com/r/BSpvV6/7
+        // https://stackoverflow.com/a/5553924
         let p = marked.match(/(==(.*?)==)|[^.!?\s][^.!?]*(?:[.!?](?!['"]?\s|$)[^.!?]*)*[.!?]?['"]?(?=\s|$)/gm);
 
         let np = new Array();
