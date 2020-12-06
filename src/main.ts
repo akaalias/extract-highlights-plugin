@@ -176,11 +176,12 @@ export default class ExtractHighlightsPlugin extends Plugin {
 		const cursorPosition = this.editor.getCursor();
 		let lineText = this.editor.getLine(cursorPosition.line);
 
+		// use our fancy class to figure this out
 		let th = new ToggleHighlight();
 		let result = th.toggleHighlight(lineText, cursorPosition.ch);
 
+		// catch up on cursor
 		let cursorDifference = -2;
-
 		if(result.length > lineText.length) { cursorDifference = 2 }
 
 		this.editor.replaceRange(result, {line: cursorPosition.line, ch: 0}, {line: cursorPosition.line, ch: lineText.length})
