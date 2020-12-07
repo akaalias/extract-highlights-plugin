@@ -23,7 +23,7 @@ Optionally you can customize...
 
 ### Watch the Quick-Start Tutorial!
 
-![https://www.youtube.com/watch?v=KWdEatdD2bo](https://github.com/akaalias/extract-highlights-plugin/blob/master/video.png?raw=true)
+[![](https://github.com/akaalias/extract-highlights-plugin/blob/master/video.png?raw=true)](https://www.youtube.com/watch?v=KWdEatdD2bo)
 
 #### Using the Hotkey to EXTRACT highlights
 
