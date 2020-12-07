@@ -2,9 +2,9 @@
 
 Extracts all highlights from a current note in Obsidian into your clipboard. Based on [icebear's plugin request](https://forum.obsidian.md/t/extract-highlights-from-note/7867).
 
-Are you using Extract Highlights? I'd love to hear from you! 
+### Watch the Quick-Start Tutorial!
 
-[Share your questions and suggestions in the forum](https://forum.obsidian.md/t/extract-highlights-plugin/8763/12)
+[![](https://github.com/akaalias/extract-highlights-plugin/blob/master/video.png?raw=true)](https://www.youtube.com/watch?v=KWdEatdD2bo)
 
 ### How it works
 This plugin will copy the highlights delimited by `==`, `**` and `<mark></mark>` into your clipboard as a bullet-list. 
@@ -20,10 +20,6 @@ Optionally you can customize...
 
 ![basic functionality](https://github.com/akaalias/extract-highlights-plugin/blob/master/highlight.gif?raw=true)
 
-
-### Watch the Quick-Start Tutorial!
-
-[![](https://github.com/akaalias/extract-highlights-plugin/blob/master/video.png?raw=true)](https://www.youtube.com/watch?v=KWdEatdD2bo)
 
 #### Using the Hotkey to EXTRACT highlights
 
@@ -66,6 +62,11 @@ After using the hotkey, button or command palette, anywhere you want, just paste
 <kbd>Command</kbd> + <kbd>v</kbd> (MacOS) or the equivalent on Windows/Linux
 
 The output is a markdown-block titled "Highlights" with a bullet-list of the highlights.
+
+### Feedback
+Are you using Extract Highlights? I'd love to hear from you! 
+
+[Share your questions and suggestions in the forum](https://forum.obsidian.md/t/extract-highlights-plugin/8763/12)
 
 
 ### Backlog
