@@ -5,9 +5,10 @@
   "main": "ExtractHighlightsPlugin.js",
   "type": "module",
   "scripts": {
-    "dev": "rollup --config rollup.config.js -w",
-    "build": "rollup --config rollup.config.js",
-    "test": "cross-env TS_NODE_COMPILER_OPTIONS='{ \"module\": \"commonjs\" }' mocha -r ts-node/register -r ignore-styles -r jsdom-global/register --watch --watch-files src, test/**/*.ts"
+      "dev": "rollup --config rollup.config.js -w",
+      "build": "rollup --config rollup.config.js",
+      "test": "cross-env TS_NODE_COMPILER_OPTIONS='{ \"module\": \"commonjs\" }' mocha -r ts-node/register -r ignore-styles -r jsdom-global/register test/**/*.ts",
+      "test:watch": "cross-env TS_NODE_COMPILER_OPTIONS='{ \"module\": \"commonjs\" }' mocha -r ts-node/register -r ignore-styles -r jsdom-global/register --watch --watch-files src, test/**/*.ts"
   },
   "keywords": [],
   "author": "",
