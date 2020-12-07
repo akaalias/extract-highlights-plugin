@@ -1,4 +1,5 @@
 ## Extract Highlights Plugin
+![](https://github.com/akaalias/extract-highlights-plugin/workflows/Node.js%20CI/badge.svg)
 
 Extracts all highlights from a current note in Obsidian into your clipboard. Based on [icebear's plugin request](https://forum.obsidian.md/t/extract-highlights-from-note/7867).
 
