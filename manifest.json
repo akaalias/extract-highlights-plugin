@@ -1,8 +1,8 @@
 {
   "id": "extract-highlights-plugin",
   "name": "Extract Highlights",
-  "version": "0.0.13",
-  "description": "Allows to extracts all highlights in a note into your clipboard",
+  "version": "0.0.14",
+  "description": "Create and export highlights in your notes.",
   "author": "Alexis Rondeau",
   "authorUrl": "https://publish.obsidian.md/alexisrondeau",
   "js": "main.js"
