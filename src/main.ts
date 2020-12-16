@@ -1,4 +1,4 @@
-import {Plugin, Notice, addIcon, View, MarkdownView} from "obsidian"
+import {Plugin, Notice, addIcon, View, MarkdownView, Workspace} from "obsidian"
 import ExtractHighlightsPluginSettings from "./ExtractHighlightsPluginSettings"
 import ExtractHighlightsPluginSettingsTab from "./ExtractHighlightsPluginSettingsTab"
 import {Position} from "codemirror";
@@ -23,16 +23,6 @@ export default class ExtractHighlightsPlugin extends Plugin {
 		this.addRibbonIcon('target', 'Extract Highlights', () => {
 			this.extractHighlights();
 		});
-
-		this.registerEvent(
-			this.app.on('codemirror', (cm: CodeMirror.Editor | MarkdownView) => {
-				if ('sourceMode' in cm) {
-					this.editor = cm.sourceMode.cmEditor;
-				} else {
-					this.editor = cm;
-				}
-			}),
-		);
 
 		this.addCommand({
 			id: "shortcut-extract-highlights",
@@ -173,6 +163,10 @@ export default class ExtractHighlightsPlugin extends Plugin {
 	}
 
 	createHighlight() {
+		const mdView = this.app.workspace.activeLeaf.view as MarkdownView;
+		const doc = mdView.sourceMode.cmEditor;
+		this.editor = doc;
+
 		const cursorPosition = this.editor.getCursor();
 		let lineText = this.editor.getLine(cursorPosition.line);
 
