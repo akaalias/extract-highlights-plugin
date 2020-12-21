@@ -71,21 +71,6 @@ export default class ExtractHighlightsPlugin extends Plugin {
 		console.log(this.app.workspace.activeLeaf?.view);
 
 		try {
-			if (this.app.workspace.activeLeaf?.view.icon == "pdf-file") {
-				console.log("Process PDF");
-				var pdfPath = activeLeaf?.view.file.path;
-
-				// pdfjsLib.GlobalWorkerOptions.workerSrc = './node_modules/pdfjs-dist/build/pdf.worker.js'
-
-				console.log(pdfPath);
-
-				const vaultPath = activeLeaf?.view.file.vault.adapter.basePath;
-				const path = "file://" + vaultPath + "/" + pdfPath;
-
-				// @ts-ignore
-				var loadingTask = pdfjsLib.getDocument(path);
-			}
-
 			if (activeLeaf?.view?.data) {
 				let highlightsText = this.processHighlights(activeLeaf.view);
 				let saveStatus = this.saveToClipboard(highlightsText);
