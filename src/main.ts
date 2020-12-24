@@ -58,6 +58,7 @@ export default class ExtractHighlightsPlugin extends Plugin {
 			this.settings.addFootnotes = loadedSettings.addFootnotes;
 			this.settings.createLinks = loadedSettings.createLinks;
 			this.settings.autoCapitalize = loadedSettings.autoCapitalize;
+			this.settings.createNewFile = loadedSettings.createNewFile;
 		  } else {
 			console.log("No settings file found, saving...");
 			this.saveData(this.settings);
@@ -65,21 +66,44 @@ export default class ExtractHighlightsPlugin extends Plugin {
 		})();
 	}
 
-	extractHighlights(): void {
+	async extractHighlights() {
 		let activeLeaf: any = this.app.workspace.activeLeaf ?? null
 
-		console.log(this.app.workspace.activeLeaf?.view);
+		console.log(activeLeaf?.view.file);
+
+		let name = activeLeaf?.view.file.basename;
 
 		try {
 			if (activeLeaf?.view?.data) {
 				let highlightsText = this.processHighlights(activeLeaf.view);
 				let saveStatus = this.saveToClipboard(highlightsText);
 				new Notice(saveStatus);
+
+				if (this.settings.createNewFile) {
+					const newBasename = "Highlights for " + name + ".md";
+					console.log(newBasename);
+					// Add link back to Original
+					highlightsText += `\n\n## Source\n- [[${name}]]`;
+
+					await this.saveToFile(newBasename, highlightsText);
+					await this.app.workspace.openLinkText(newBasename, newBasename, true);
+				}
+
 			} else {
 				new Notice("No highlights to extract.");
 			}
 		} catch (e) {
 			console.log(e.message)
+		}
+	}
+
+	async saveToFile(filePath: string, mdString: string) {
+		//If files exists then append content to existing file
+		const fileExists = await this.app.vault.adapter.exists(filePath);
+		if (fileExists) {
+
+		} else {
+			await this.app.vault.create(filePath, mdString);
 		}
 	}
 

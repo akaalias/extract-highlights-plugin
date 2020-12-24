@@ -76,5 +76,18 @@ export default class ExtractHighlightsPluginSettingsTab extends PluginSettingTab
 					this.plugin.settings.autoCapitalize = value;
 					this.plugin.saveData(this.plugin.settings);
 				}),
-			);	}
+			);
+
+		new Setting(containerEl)
+			.setName('Open new file with highlights')
+			.setDesc(
+				'If enabled, opens a new file with the highlights copied into.',
+			)
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.createNewFile).onChange((value) => {
+					this.plugin.settings.createNewFile = value;
+					this.plugin.saveData(this.plugin.settings);
+				}),
+			);
+	}
 }

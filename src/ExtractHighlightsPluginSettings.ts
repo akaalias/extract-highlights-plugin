@@ -4,6 +4,7 @@ export default class ExtractHighlightsPluginSettings {
   public useBoldForHighlights: boolean;
   public createLinks: boolean;
   public autoCapitalize: boolean;
+  public createNewFile: boolean;
 
   constructor() {
     this.headlineText = "";
@@ -11,5 +12,6 @@ export default class ExtractHighlightsPluginSettings {
     this.useBoldForHighlights = false;
     this.createLinks = false;
     this.autoCapitalize = false;
+    this.createNewFile = false;
   }
 }
