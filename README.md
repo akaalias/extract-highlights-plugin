@@ -1,7 +1,7 @@
 ## Extract Highlights Plugin
 ![](https://github.com/akaalias/extract-highlights-plugin/workflows/Node.js%20CI/badge.svg)
 
-Extracts all highlights from a current note in Obsidian into your clipboard. Based on [icebear's plugin request](https://forum.obsidian.md/t/extract-highlights-from-note/7867).
+Create and extract highlights from a current markdown note in Obsidian into your clipboard. Based on [icebear's plugin request](https://forum.obsidian.md/t/extract-highlights-from-note/7867).
 
 ### Watch the Quick-Start Tutorial!
 
@@ -19,14 +19,10 @@ Optionally you can customize...
 
 ### Demo Creating and Extracting Highlights
 
+1. First you see how I use the CREATE highlights hot-key to highlight sentences
+2. Then you see how I use the EXTRACT highlights hot-key to create a new file with the highlights
+
 ![basic functionality](https://github.com/akaalias/extract-highlights-plugin/blob/master/highlight.gif?raw=true)
-
-
-#### Using the Hotkey to EXTRACT highlights
-
-The default hotkey is: 
-
-<kbd>SHIFT</kbd> + <kbd>ALT</kbd> + <kbd>=</kbd>
 
 #### Using the Hotkey to HIGHLIGHT (and UN-HIGHLIGHT) the sentence under cursor
 
@@ -39,6 +35,12 @@ Super useful for when you're reading and just don't want to switch to your mouse
 ![demo](https://github.com/akaalias/extract-highlights-plugin/blob/master/onoff.gif?raw=true)
 
 Will remove highlighting if the sentence under your cursor is currently delimited by "==".
+
+#### Using the Hotkey to EXTRACT highlights
+
+The default hotkey is: 
+
+<kbd>SHIFT</kbd> + <kbd>ALT</kbd> + <kbd>=</kbd>
 
 #### Using the Ribbon Button
 There is also a button (a circle-shape) that's added to your left-side ribbon. 
@@ -71,7 +73,28 @@ Are you using Extract Highlights? I'd love to hear from you!
 
 
 ### Backlog
-#### UI
+#### TODO
+- Record video on using the "explosion mode" for research and creating atomic notes
+  - Pre-requisites
+    - Highlights Plugin
+      - Create links
+      - Create page
+      - Enable explode mode
+      - Open notes on creation
+    - Sliding Panes Plugin
+  - Start with a good article (Economist)
+  - Go through and highlight sentences
+  - Create MOC and explode into notes 
+    - BOOOMMMMM!!!
+    - You've got an MOC
+    - You've got the core for single-idea, atomic notes
+    - You've got a backlink to the original file 
+
+#### DOING
+...
+
+#### DONE
+- [x] "Explode" highlights into individual notes (assumes I'm creating the list of links as well)
 - [x] command (<kbd>SHIFT</kbd> + <kbd>ALT</kbd> + <kbd>=</kbd>) which then copies all of the highlighted text either into:
 - [x] click a button which then copies all of the highlighted text either into:
 - [x] allow for `<mark></mark>` to be used as highlights
@@ -82,10 +105,5 @@ Are you using Extract Highlights? I'd love to hear from you!
 - [x] allow to add footnotes for each highlight and include link to source-note
 - [x] allow to optionally enable bold for highlights 
 - [x] allow for Command Palette to trigger copying (Works sort of, bug in Electron)
-
-#### Outputs
 - [x] my clipboard
-- [ ] the top/botton of the note and selected for a next step,
-- [ ] a designated area in the note such as {{highlights}}, or
-- [ ] a new note
-
+- [x] a new note

@@ -5,6 +5,8 @@ export default class ExtractHighlightsPluginSettings {
   public createLinks: boolean;
   public autoCapitalize: boolean;
   public createNewFile: boolean;
+  public explodeIntoNotes: boolean;
+  public openExplodedNotes: boolean;
 
   constructor() {
     this.headlineText = "";
@@ -13,5 +15,7 @@ export default class ExtractHighlightsPluginSettings {
     this.createLinks = false;
     this.autoCapitalize = false;
     this.createNewFile = false;
+    this.explodeIntoNotes = false;
+    this.openExplodedNotes = false;
   }
 }

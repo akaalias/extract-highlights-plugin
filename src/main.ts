@@ -59,6 +59,8 @@ export default class ExtractHighlightsPlugin extends Plugin {
 			this.settings.createLinks = loadedSettings.createLinks;
 			this.settings.autoCapitalize = loadedSettings.autoCapitalize;
 			this.settings.createNewFile = loadedSettings.createNewFile;
+			this.settings.explodeIntoNotes = loadedSettings.explodeIntoNotes;
+			this.settings.openExplodedNotes = loadedSettings.openExplodedNotes;
 		  } else {
 			console.log("No settings file found, saving...");
 			this.saveData(this.settings);
@@ -69,24 +71,44 @@ export default class ExtractHighlightsPlugin extends Plugin {
 	async extractHighlights() {
 		let activeLeaf: any = this.app.workspace.activeLeaf ?? null
 
-		console.log(activeLeaf?.view.file);
-
 		let name = activeLeaf?.view.file.basename;
 
 		try {
 			if (activeLeaf?.view?.data) {
-				let highlightsText = this.processHighlights(activeLeaf.view);
+				let highlightsText = this.processHighlights(activeLeaf.view).markdown;
+				let items = this.processHighlights(activeLeaf.view).items;
 				let saveStatus = this.saveToClipboard(highlightsText);
 				new Notice(saveStatus);
 
+				const newBasenameMOC = "Highlights for " + name + ".md";
 				if (this.settings.createNewFile) {
-					const newBasename = "Highlights for " + name + ".md";
-					console.log(newBasename);
 					// Add link back to Original
-					highlightsText += `\n\n## Source\n- [[${name}]]`;
+					highlightsText += `## Source\n- [[${name}]]`;
 
-					await this.saveToFile(newBasename, highlightsText);
-					await this.app.workspace.openLinkText(newBasename, newBasename, true);
+					await this.saveToFile(newBasenameMOC, highlightsText);
+					await this.app.workspace.openLinkText(newBasenameMOC, newBasenameMOC, true);
+				}
+
+				if(this.settings.createNewFile && this.settings.createLinks && this.settings.explodeIntoNotes) {
+					for(var i = 0; i < items.length; i++) {
+						console.log("Creating file for " + items[i]);
+						var content = "";
+						// add highlight as quote
+						content += "## Source\n"
+						content += `> ${items[i]}[^1]`;
+						content += "\n\n";
+						content += `[^1]: [[${name}]]`;
+						content += "\n";
+						console.log(content);
+
+						const newBasename = items[i] + ".md";
+
+						await this.saveToFile(newBasename, content);
+
+						if(this.settings.openExplodedNotes) {
+							await this.app.workspace.openLinkText(newBasename, newBasename, true);
+						}
+					}
 				}
 
 			} else {
@@ -101,13 +123,13 @@ export default class ExtractHighlightsPlugin extends Plugin {
 		//If files exists then append content to existing file
 		const fileExists = await this.app.vault.adapter.exists(filePath);
 		if (fileExists) {
-
+			console.log("File exists already...");
 		} else {
 			await this.app.vault.create(filePath, mdString);
 		}
 	}
 
-	processHighlights(view: any): string {
+	processHighlights(view) {
 
 		var re;
 
@@ -122,9 +144,8 @@ export default class ExtractHighlightsPlugin extends Plugin {
 		let matches = data.match(re);
 		this.counter += 1;
 
-		console.log(matches.length);
-
 		var result = "";
+		var items = [];
 
 		if (matches != null) {
 			if(this.settings.headlineText != "") { 
@@ -152,9 +173,15 @@ export default class ExtractHighlightsPlugin extends Plugin {
 				result += "- "
 
 				if(this.settings.createLinks) {
-					result += "[[" + removeDoubleSpaces + "]]";
+					// First, sanitize highlight to be used as a file-link
+					// * " \ / | < > : ?
+					let sanitized = removeDoubleSpaces.replace(/\*|\"|\\|\/|\<|\>|\:|\?|\|/gm, "");
+					sanitized = sanitized.trim();
+					result += "[[" + sanitized + "]]";
+					items.push(sanitized);
 				} else {
 					result += removeDoubleSpaces;
+					items.push(removeDoubleSpaces);
 				}
 
 				if(this.settings.addFootnotes) {
@@ -172,15 +199,12 @@ export default class ExtractHighlightsPlugin extends Plugin {
 			result += "\n";
 		}
 
-		return result;
+		return {markdown: result, items: items};
 	}
 
 	saveToClipboard(data: string): string {
 		if (data.length > 0) {
-			console.log(data);
-
 			navigator.clipboard.writeText(data);
-		
 			return "Highlights copied to clipboard!";
 		} else {
 			return "No highlights found";
@@ -209,7 +233,6 @@ export default class ExtractHighlightsPlugin extends Plugin {
 
 
 	capitalizeFirstLetter(s: string) {
-		console.log("capitalizing...");
 		return s.charAt(0).toUpperCase() + s.slice(1);
 	}
 }
