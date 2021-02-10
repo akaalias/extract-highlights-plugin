@@ -33,6 +33,6 @@
     "typescript": "^4.1.3"
   },
   "dependencies": {
-    "electron": "^10.2.0"
+    "electron": "^11.2.3"
   }
 }

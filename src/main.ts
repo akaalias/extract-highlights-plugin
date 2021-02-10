@@ -76,7 +76,8 @@ export default class ExtractHighlightsPlugin extends Plugin {
 		try {
 			if (activeLeaf?.view?.data) {
 				let highlightsText = this.processHighlights(activeLeaf.view).markdown;
-				let items = this.processHighlights(activeLeaf.view).items;
+				let highlights = this.processHighlights(activeLeaf.view).highlights;
+				let baseNames = this.processHighlights(activeLeaf.view).baseNames;
 				let saveStatus = this.saveToClipboard(highlightsText);
 				new Notice(saveStatus);
 
@@ -90,18 +91,18 @@ export default class ExtractHighlightsPlugin extends Plugin {
 				}
 
 				if(this.settings.createNewFile && this.settings.createLinks && this.settings.explodeIntoNotes) {
-					for(var i = 0; i < items.length; i++) {
-						console.log("Creating file for " + items[i]);
+					for(var i = 0; i < baseNames.length; i++) {
+						console.log("Creating file for " + baseNames[i]);
 						var content = "";
 						// add highlight as quote
 						content += "## Source\n"
-						content += `> ${items[i]}[^1]`;
+						content += `> ${highlights[i]}[^1]`;
 						content += "\n\n";
 						content += `[^1]: [[${name}]]`;
 						content += "\n";
 						console.log(content);
 
-						const newBasename = items[i] + ".md";
+						const newBasename = baseNames[i] + ".md";
 
 						await this.saveToFile(newBasename, content);
 
@@ -129,7 +130,7 @@ export default class ExtractHighlightsPlugin extends Plugin {
 		}
 	}
 
-	processHighlights(view) {
+	processHighlights(view: any) {
 
 		var re;
 
@@ -145,7 +146,8 @@ export default class ExtractHighlightsPlugin extends Plugin {
 		this.counter += 1;
 
 		var result = "";
-		var items = [];
+		var highlights = [];
+		var baseNames = [];
 
 		if (matches != null) {
 			if(this.settings.headlineText != "") { 
@@ -177,11 +179,19 @@ export default class ExtractHighlightsPlugin extends Plugin {
 					// * " \ / | < > : ?
 					let sanitized = removeDoubleSpaces.replace(/\*|\"|\\|\/|\<|\>|\:|\?|\|/gm, "");
 					sanitized = sanitized.trim();
-					result += "[[" + sanitized + "]]";
-					items.push(sanitized);
+
+					let baseName = sanitized;
+					if(baseName.length > 100) {
+						baseName = baseName.substr(0, 99);
+						baseName += "..."
+					}
+
+					result += "[[" + baseName + "]]";
+					highlights.push(sanitized);
+					baseNames.push(baseName);
 				} else {
 					result += removeDoubleSpaces;
-					items.push(removeDoubleSpaces);
+					highlights.push(removeDoubleSpaces);
 				}
 
 				if(this.settings.addFootnotes) {
@@ -199,7 +209,7 @@ export default class ExtractHighlightsPlugin extends Plugin {
 			result += "\n";
 		}
 
-		return {markdown: result, items: items};
+		return {markdown: result, baseNames: baseNames, highlights: highlights};
 	}
 
 	saveToClipboard(data: string): string {
