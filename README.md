@@ -7,15 +7,13 @@ Create and extract highlights from a current markdown note in Obsidian into your
 
 ### Watch: The Quick-Start Tutorial!
 
-[![](https://github.com/akaalias/extract-highlights-plugin/blob/master/video.png?raw=true)](https://www.youtube.com/watch?v=KWdEatdD2bo)
-
-### Watch: How to create ad-hoc MOCs
-
 [![](https://github.com/akaalias/extract-highlights-plugin/blob/master/adhoc.png?raw=true)](https://youtu.be/KWdEatdD2bo)
 
 ### Watch: A SECRET NEW highlight mode
 
 [![](https://github.com/akaalias/extract-highlights-plugin/blob/master/secret.png?raw=true)](https://youtu.be/5kkcqAn6joU)
+
+### Watch: Tips and Tricks for the SECRET mode
 
 [![](https://github.com/akaalias/extract-highlights-plugin/blob/master/secrettips.png?raw=true)](https://youtu.be/n3YW5bmnETg)
 
