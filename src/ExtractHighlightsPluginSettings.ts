@@ -7,6 +7,7 @@ export default class ExtractHighlightsPluginSettings {
   public createNewFile: boolean;
   public explodeIntoNotes: boolean;
   public openExplodedNotes: boolean;
+  public createContextualQuotes: boolean;
 
   constructor() {
     this.headlineText = "";
@@ -17,5 +18,6 @@ export default class ExtractHighlightsPluginSettings {
     this.createNewFile = false;
     this.explodeIntoNotes = false;
     this.openExplodedNotes = false;
+    this.createContextualQuotes = false;
   }
 }

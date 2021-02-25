@@ -133,6 +133,18 @@ export default class ExtractHighlightsPluginSettingsTab extends PluginSettingTab
 					}),
 				);
 
+			new Setting(containerEl)
+				.setName('Create contextual quotes')
+				.setDesc(
+					'If enabled, will quote the full line of your highlight, not just the highlight itself. Useful for keeping the context of your highlight.',
+				)
+				.addToggle((toggle) =>
+					toggle.setValue(this.plugin.settings.createContextualQuotes).onChange((value) => {
+						this.plugin.settings.createContextualQuotes = value;
+						this.plugin.saveData(this.plugin.settings);
+					}),
+				);
+
 		}
 
 	}

@@ -53,7 +53,7 @@ export default class ExtractHighlightsPlugin extends Plugin {
 		(async () => {
 		  const loadedSettings = await this.loadData();
 		  if (loadedSettings) {
-			console.log("Found existing settings file");
+			// console.log("Found existing settings file");
 			this.settings.headlineText = loadedSettings.headlineText;
 			this.settings.addFootnotes = loadedSettings.addFootnotes;
 			this.settings.createLinks = loadedSettings.createLinks;
@@ -61,8 +61,9 @@ export default class ExtractHighlightsPlugin extends Plugin {
 			this.settings.createNewFile = loadedSettings.createNewFile;
 			this.settings.explodeIntoNotes = loadedSettings.explodeIntoNotes;
 			this.settings.openExplodedNotes = loadedSettings.openExplodedNotes;
+			this.settings.createContextualQuotes = loadedSettings.createContextualQuotes;
 		  } else {
-			console.log("No settings file found, saving...");
+			// console.log("No settings file found, saving...");
 			this.saveData(this.settings);
 		  }
 		})();
@@ -75,9 +76,11 @@ export default class ExtractHighlightsPlugin extends Plugin {
 
 		try {
 			if (activeLeaf?.view?.data) {
-				let highlightsText = this.processHighlights(activeLeaf.view).markdown;
-				let highlights = this.processHighlights(activeLeaf.view).highlights;
-				let baseNames = this.processHighlights(activeLeaf.view).baseNames;
+				let processResults = this.processHighlights(activeLeaf.view);
+				let highlightsText = processResults.markdown;
+				let highlights = processResults.highlights;
+				let baseNames = processResults.baseNames;
+				let contexts = processResults.contexts;
 				let saveStatus = this.saveToClipboard(highlightsText);
 				new Notice(saveStatus);
 
@@ -92,15 +95,21 @@ export default class ExtractHighlightsPlugin extends Plugin {
 
 				if(this.settings.createNewFile && this.settings.createLinks && this.settings.explodeIntoNotes) {
 					for(var i = 0; i < baseNames.length; i++) {
-						console.log("Creating file for " + baseNames[i]);
+						// console.log("Creating file for " + baseNames[i]);
 						var content = "";
 						// add highlight as quote
 						content += "## Source\n"
-						content += `> ${highlights[i]}[^1]`;
+						if(this.settings.createContextualQuotes) {
+							// context quote
+							content += `> ${contexts[i]}[^1]`;
+						} else {
+							// regular highlight quote
+							content += `> ${highlights[i]}[^1]`;
+						}
 						content += "\n\n";
 						content += `[^1]: [[${name}]]`;
 						content += "\n";
-						console.log(content);
+						// console.log(content);
 
 						const newBasename = baseNames[i] + ".md";
 
@@ -124,7 +133,7 @@ export default class ExtractHighlightsPlugin extends Plugin {
 		//If files exists then append content to existing file
 		const fileExists = await this.app.vault.adapter.exists(filePath);
 		if (fileExists) {
-			console.log("File exists already...");
+			// console.log("File exists already...");
 		} else {
 			await this.app.vault.create(filePath, mdString);
 		}
@@ -140,14 +149,23 @@ export default class ExtractHighlightsPlugin extends Plugin {
 			re = /(==|\<mark\>)([\s\S]*?)(==|\<\/mark\>)/g;
 		}
 
-		let data = view.data;
+		let markdownText = view.data;
 		let basename = view.file.basename;
-		let matches = data.match(re);
+		let matches = markdownText.match(re);
 		this.counter += 1;
 
 		var result = "";
 		var highlights = [];
 		var baseNames = [];
+		let contexts: any[][] = [];
+		let lines = markdownText.split("\n");
+		let cleanedLines = [];
+
+		for(var i = 0; i < lines.length; i++) {
+			if(!(lines[i] == "")) {
+				cleanedLines.push(lines[i]);
+			}
+		}
 
 		if (matches != null) {
 			if(this.settings.headlineText != "") { 
@@ -156,6 +174,21 @@ export default class ExtractHighlightsPlugin extends Plugin {
 			}
 
 			for (let entry of matches) {
+				// Keep surrounding paragraph for context
+				if(this.settings.createContextualQuotes) {
+					for(var i = 0; i < cleanedLines.length; i++) {
+						let match = cleanedLines[i].match(entry);
+						if(!(match == null) && match.length > 0) {
+							let val = cleanedLines[i];
+
+							if(!contexts.contains(val)) {
+								contexts.push(val);
+							}
+						}
+					}
+				}
+
+				// Clean up highlighting match
 				var removeNewline = entry.replace(/\n/g, " ");
 				let removeHighlightStart = removeNewline.replace(/==/g, "")
 				let removeHighlightEnd = removeHighlightStart.replace(/\<mark\>/g, "")
@@ -209,7 +242,7 @@ export default class ExtractHighlightsPlugin extends Plugin {
 			result += "\n";
 		}
 
-		return {markdown: result, baseNames: baseNames, highlights: highlights};
+		return {markdown: result, baseNames: baseNames, highlights: highlights, contexts: contexts};
 	}
 
 	saveToClipboard(data: string): string {
