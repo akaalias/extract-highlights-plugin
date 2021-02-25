@@ -1,6 +1,6 @@
 {
   "name": "extract-highlights-plugin",
-  "version": "0.0.1",
+  "version": "0.0.18",
   "description": "his is a shortcut-based plugin extracts all ==highlights== in a note into your clipboard",
   "main": "ExtractHighlightsPlugin.js",
   "type": "module",
