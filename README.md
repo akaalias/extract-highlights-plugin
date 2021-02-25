@@ -3,9 +3,21 @@
 
 Create and extract highlights from a current markdown note in Obsidian into your clipboard. Based on [icebear's plugin request](https://forum.obsidian.md/t/extract-highlights-from-note/7867).
 
-### Watch the Quick-Start Tutorial!
+## Training Videos
+
+### Watch: The Quick-Start Tutorial!
 
 [![](https://github.com/akaalias/extract-highlights-plugin/blob/master/video.png?raw=true)](https://www.youtube.com/watch?v=KWdEatdD2bo)
+
+### Watch: How to create ad-hoc MOCs
+
+[![](https://github.com/akaalias/extract-highlights-plugin/blob/master/adhoc.png?raw=true)](https://youtu.be/KWdEatdD2bo)
+
+### Watch: A SECRET NEW highlight mode
+
+[![](https://github.com/akaalias/extract-highlights-plugin/blob/master/secret.png?raw=true)](https://youtu.be/5kkcqAn6joU)
+
+[![](https://github.com/akaalias/extract-highlights-plugin/blob/master/secrettips.png?raw=true)](https://youtu.be/n3YW5bmnETg)
 
 ### How it works
 This plugin will copy the highlights delimited by `==`, `**` and `<mark></mark>` into your clipboard as a bullet-list. 
