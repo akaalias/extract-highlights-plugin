@@ -104,6 +104,42 @@ export default class ExtractHighlightsPluginSettingsTab extends PluginSettingTab
 					this.plugin.saveData(this.plugin.settings);
 				}),
 			);
+			
+		new Setting(containerEl)
+			.setName('Keep Hightlight Marks (==) in the extracted text')
+			.setDesc(
+				'If enabled, will keep the highlight marks (==) in the extracted text',
+			)
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.keepHighlightMarks).onChange((value) => {
+					this.plugin.settings.keepHighlightMarks = value;
+					this.plugin.saveData(this.plugin.settings);
+				}),
+			)
+
+			new Setting(containerEl)
+			.setName('Keep Bold Marks (**) in the extracted text')
+			.setDesc(
+				'If enabled, will keep the bold marks (**) in the extracted text',
+			)
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.keepBoldMarks).onChange((value) => {
+					this.plugin.settings.keepBoldMarks = value;
+					this.plugin.saveData(this.plugin.settings);
+				}),
+			)
+
+			new Setting(containerEl)
+			.setName('Keep HTML Marks (<mark>) in the extracted text')
+			.setDesc(
+				'If enabled, will keep the bold marks (<mark>) in the extracted text',
+			)
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.keepHTMLMarkMarks).onChange((value) => {
+					this.plugin.settings.keepHTMLMarkMarks = value;
+					this.plugin.saveData(this.plugin.settings);
+				}),
+			)
 
 		containerEl.createEl("h2", {text: "💥 Explode Notes Mode 💥"});
 		containerEl.createEl("p", {text: "A secret mode that will take your highlighting to the next level. Only available if you have  'Create Links' and 'Create new File' enabled. After enabling both, close this window and open again to see options."});
@@ -112,7 +148,7 @@ export default class ExtractHighlightsPluginSettingsTab extends PluginSettingTab
 			new Setting(containerEl)
 				.setName('Explode links into notes')
 				.setDesc(
-					'If enabled, will turn each highlight into a note with the highlighted text as quote and a backlink to the MOC and source-file. Very powerful but use with caution!',
+					'If enabled, will turn each highlight into a note with the highlighted text as quote and a backlink to the MOC and source-file. The highlight marks and classic bold marks will also be romoved by force frome the extraction. Very powerful but use with caution!',
 				)
 				.addToggle((toggle) =>
 					toggle.setValue(this.plugin.settings.explodeIntoNotes).onChange((value) => {

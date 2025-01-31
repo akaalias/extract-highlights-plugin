@@ -8,6 +8,9 @@ export default class ExtractHighlightsPluginSettings {
   public explodeIntoNotes: boolean;
   public openExplodedNotes: boolean;
   public createContextualQuotes: boolean;
+  public keepHighlightMarks: boolean;
+  public keepBoldMarks: boolean;
+  public keepHTMLMarkMarks:boolean;
 
   constructor() {
     this.headlineText = "";
@@ -19,5 +22,8 @@ export default class ExtractHighlightsPluginSettings {
     this.explodeIntoNotes = false;
     this.openExplodedNotes = false;
     this.createContextualQuotes = false;
+    this.keepHighlightMarks = false;
+    this.keepBoldMarks = false;
+    this.keepHTMLMarkMarks = false;
   }
 }

@@ -1,4 +1,4 @@
-import {Plugin, Notice, addIcon, View, MarkdownView, Workspace} from "obsidian"
+import {Plugin, Notice, addIcon, View, MarkdownView, Workspace, MarkdownEditView, Editor} from "obsidian"
 import ExtractHighlightsPluginSettings from "./ExtractHighlightsPluginSettings"
 import ExtractHighlightsPluginSettingsTab from "./ExtractHighlightsPluginSettingsTab"
 import ToggleHighlight from "./ToggleHighlight";
@@ -10,7 +10,7 @@ export default class ExtractHighlightsPlugin extends Plugin {
 	public settings: ExtractHighlightsPluginSettings;
 	public statusBar: HTMLElement
 	public counter: 0;
-	private editor: CodeMirror.Editor;
+	private editor: Editor;
 
 	async onload() {
 		this.counter = 0;
@@ -62,6 +62,9 @@ export default class ExtractHighlightsPlugin extends Plugin {
 			this.settings.explodeIntoNotes = loadedSettings.explodeIntoNotes;
 			this.settings.openExplodedNotes = loadedSettings.openExplodedNotes;
 			this.settings.createContextualQuotes = loadedSettings.createContextualQuotes;
+			this.settings.keepBoldMarks = loadedSettings.keepBoldMarks;
+			this.settings.keepHTMLMarkMarks = loadedSettings.keepHTMLMarkMarks;
+			this.settings.keepHighlightMarks = loadedSettings.keepHighlightMarks;
 		  } else {
 			// console.log("No settings file found, saving...");
 			this.saveData(this.settings);
@@ -195,9 +198,29 @@ export default class ExtractHighlightsPlugin extends Plugin {
 				let removeMarkClosing = removeHighlightEnd.replace(/\<\/mark\>/g, "")
 				let removeBold = removeMarkClosing.replace(/\*\*/g, "")
 				let removeDoubleSpaces = removeBold.replace("  ", " ");
-
 				removeDoubleSpaces = removeDoubleSpaces.replace("  ", " ");
 				removeDoubleSpaces = removeDoubleSpaces.trim();
+
+				// create a other pipline for the highlight output
+				var highlightMarkdownOutput_removeNewline = entry.replace(/\n/g, " ");
+				let highlightMarkdownOutput_removeHighlightMark = highlightMarkdownOutput_removeNewline;
+				if(this.settings.keepHighlightMarks == false){
+					highlightMarkdownOutput_removeHighlightMark = highlightMarkdownOutput_removeNewline.replace(/==/g, "");
+				}
+				let highlightMarkdownOutput_removeMarkStart = highlightMarkdownOutput_removeHighlightMark;
+				let highlightMarkdownOutput_removeMarkClosing = highlightMarkdownOutput_removeMarkStart;
+				if(this.settings.keepHTMLMarkMarks == false){
+					highlightMarkdownOutput_removeMarkStart = highlightMarkdownOutput_removeHighlightMark.replace(/\<mark\>/g, "")
+					highlightMarkdownOutput_removeMarkClosing = highlightMarkdownOutput_removeMarkStart.replace(/\<\/mark\>/g, "")
+				}
+				let highlightMarkdownOutput_removeBold = highlightMarkdownOutput_removeMarkClosing;
+				if(this.settings.keepBoldMarks == false){
+					highlightMarkdownOutput_removeBold = highlightMarkdownOutput_removeMarkClosing.replace(/\*\*/g, "")
+				}
+				let highlightMarkdownOutput_removeDoubleSpaces = highlightMarkdownOutput_removeBold.replace("  ", " ");
+				highlightMarkdownOutput_removeDoubleSpaces = highlightMarkdownOutput_removeBold.replace("  ", " ");
+				highlightMarkdownOutput_removeDoubleSpaces = highlightMarkdownOutput_removeDoubleSpaces.trim()
+
 
 				if(this.settings.autoCapitalize) {
 					if(removeDoubleSpaces != null) {
@@ -223,8 +246,8 @@ export default class ExtractHighlightsPlugin extends Plugin {
 					highlights.push(sanitized);
 					baseNames.push(baseName);
 				} else {
-					result += removeDoubleSpaces;
-					highlights.push(removeDoubleSpaces);
+					result += highlightMarkdownOutput_removeDoubleSpaces;
+					highlights.push(highlightMarkdownOutput_removeDoubleSpaces);
 				}
 
 				if(this.settings.addFootnotes) {
@@ -255,8 +278,10 @@ export default class ExtractHighlightsPlugin extends Plugin {
 	}
 
 	createHighlight() {
-		const mdView = this.app.workspace.activeLeaf.view as MarkdownView;
-		const doc = mdView.sourceMode.cmEditor;
+		//const mdView = this.app.workspace.activeLeaf.view as MarkdownView;
+		//const doc = mdView.sourceMode.cmEditor;
+		const mdView = this.app.workspace.getActiveViewOfType(MarkdownView);
+		const doc = mdView.editor;
 		this.editor = doc;
 
 		const cursorPosition = this.editor.getCursor();
